@@ -5,7 +5,7 @@ Instructions for coding agents working on this repo or a fork. Read `README.md` 
 ## Shape
 
 - `public/index.html` is the entire site. It has no build step, no package imports and no external requests. Everything is inline: CSS, the JavaScript engine and the YAML scenes in `<script type="text/yaml" data-scene="…">`.
-- `wrangler.jsonc` describes an **assets-only** Cloudflare Worker that serves `public/` on a custom domain. Keep it assets-only: do not add a `main` script unless the user asks, because static assets are free and unmetered.
+- `wrangler.jsonc` describes an **assets-only** Cloudflare Worker that serves `public/` on `moldandyeast.com/*`. It uses a zone route because the apex already had a DNS record; a fork on a fresh hostname should use `{ "pattern": "host", "custom_domain": true }`. Keep it assets-only: do not add a `main` script unless the user asks, because static assets are free and unmetered.
 - `public/_headers` sets the CSP, the `Link` header and content types. Cloudflare reads it and does not serve it.
 - `public/llms.txt`, `public/index.md`, `public/robots.txt` and `public/sitemap.xml` are the agent-facing copies of the page. **Whenever you change the heading or links in `index.html`, update `llms.txt` and `index.md` to match.**
 
@@ -38,4 +38,4 @@ Deploying is manual and outward-facing: pushing a branch publishes nothing. Only
 
 ## Forking checklist
 
-Edit `<main id="site">`, `<head>` metadata and JSON-LD, the credits bar, the four agent files, then `name` and `routes[0].pattern` in `wrangler.jsonc`. Run `npm run check`, deploy, then run `npm run verify`.
+Edit `<main id="site">`, `<head>` metadata and JSON-LD, the credits bar, the four agent files, then `name` and `routes` in `wrangler.jsonc`. Run `npm run check`, deploy, then run `npm run verify`.

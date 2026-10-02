@@ -3,8 +3,12 @@
   "name": "my-main-oct",
   "compatibility_date": "2026-09-01",
   "workers_dev": false,
+  // The apex already has a proxied DNS record (left over from the previous Pages site),
+  // so this is a zone route rather than a custom domain: the record stays, the Worker answers.
+  // For a fresh hostname, or once that record is deleted, use instead:
+  //   { "pattern": "moldandyeast.com", "custom_domain": true }
   "routes": [
-    { "pattern": "moldandyeast.com", "custom_domain": true }
+    { "pattern": "moldandyeast.com/*", "zone_name": "moldandyeast.com" }
   ],
   "assets": {
     "directory": "./public",

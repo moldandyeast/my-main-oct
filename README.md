@@ -35,7 +35,7 @@ Then make it yours:
 2. **Metadata.** In `<head>`, update the title, description, canonical URL, `rel="me"` links and the JSON-LD block.
 3. **Credits bar.** Change the `<nav id="credits">` links at the top of `<body>` to point at you and your fork.
 4. **Agent files.** Rewrite `public/llms.txt`, `public/index.md`, `public/robots.txt` and `public/sitemap.xml` with your domain and links.
-5. **Domain.** In `wrangler.jsonc`, set `name` to your project and `routes[0].pattern` to your domain. The domain must be a zone on your Cloudflare account. Wrangler creates the DNS record and certificate on the first deploy.
+5. **Domain.** In `wrangler.jsonc`, set `name` to your project and replace the route with `{ "pattern": "your.domain", "custom_domain": true }`. The domain must be a zone on your Cloudflare account; Wrangler creates the DNS record and certificate on the first deploy. (This repo uses a zone route, `moldandyeast.com/*`, only because the apex already had a DNS record from an earlier site. Use the same if yours does.)
 6. **Deploy.**
 
    ```sh
@@ -76,7 +76,7 @@ public/sitemap.xml
 public/_headers       CSP, Link header and content types (Cloudflare reads this; it is not served)
 scripts/verify.mjs    offline and live checks, no dependencies
 scripts/piece-js.sha256  checksum of the page's JavaScript
-wrangler.jsonc        assets-only Worker on the custom domain
+wrangler.jsonc        assets-only Worker, routed on moldandyeast.com
 AGENTS.md             instructions for coding agents (CLAUDE.md points here)
 ```
 

@@ -29,7 +29,7 @@ const html = read('public/index.html').toString('utf8');
 const pieceJs = s => (s.match(/<script(?![^>]*application\/ld\+json)[^>]*>[\s\S]*?<\/script>/g) || []).join('');
 const creditLinks = [...(html.match(/<nav id="credits"[\s\S]*?<\/nav>/) || [''])[0].matchAll(/href="([^"]+)"/g)].map(m => m[1]);
 const wrangler = read('wrangler.jsonc').toString('utf8');
-const host = (wrangler.match(/"pattern":\s*"([^"/]+)/) || [])[1];
+const host = (wrangler.match(/^\s*\{ "pattern":\s*"([^"/]+)/m) || [])[1];
 
 console.log('Offline');
 check(sha256(pieceJs(html)) === read('scripts/piece-js.sha256').toString('utf8').trim(), 'piece JS matches scripts/piece-js.sha256');
@@ -39,7 +39,7 @@ check(!/@import|url\(\s*["']?(https?:)?\/\//i.test(html), 'no external CSS impor
 check(!/fonts\.(googleapis|gstatic)\.com|cdn\.|unpkg\.com|jsdelivr/i.test(html), 'no font or CDN hosts mentioned');
 check(creditLinks.length >= 3, `credits bar has ${creditLinks.length} links`);
 for (const f of ['public/llms.txt', 'public/index.md', 'public/robots.txt', 'public/sitemap.xml', 'public/_headers']) check(existsSync(new URL(f, root)), `${f} exists`);
-check(Boolean(host), `custom domain in wrangler.jsonc: ${host}`);
+check(Boolean(host), `hostname in wrangler.jsonc: ${host}`);
 
 function get(url, { ip, redirects = 5 } = {}) {
   return new Promise((resolve, reject) => {
