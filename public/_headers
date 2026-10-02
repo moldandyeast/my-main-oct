@@ -1,0 +1,19 @@
+# Cloudflare Workers static-assets headers. This file is not served itself.
+# The CSP makes "no third-party requests" something the browser enforces, not just a promise:
+# styles, scripts and scenes are all inline; the studio compiles scene code with new Function, hence 'unsafe-eval'.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; style-src 'unsafe-inline'; img-src 'self' data: blob:; font-src data:; media-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/
+  Link: </index.md>; rel="alternate"; type="text/markdown", </llms.txt>; rel="help"; type="text/plain"
+
+/index.md
+  Content-Type: text/markdown; charset=utf-8
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8

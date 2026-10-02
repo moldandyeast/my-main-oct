@@ -1,0 +1,14 @@
+{
+  "name": "my-main-oct",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check": "node scripts/verify.mjs --local",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.110.0"
+  }
+}
