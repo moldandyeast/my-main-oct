@@ -19,6 +19,7 @@ The content is the same in every mode; the plain HTML in `<main id="site">` is t
 ## Source
 
 - [GitHub repository](https://github.com/moldandyeast/my-main-oct): MIT licensed and meant to be forked. `AGENTS.md` explains the layout, the invariants and how to deploy a fork to your own domain.
+- Typeface: [ABC Areal by Dinamo](https://abcdinamo.com/typefaces/areal), free, but not redistributable, so it is subset and inlined at build time and never committed (see `fonts/README.md`).
 
 ## Optional
 

@@ -9,4 +9,4 @@
 
 This is the Markdown version of <https://moldandyeast.com/>. The HTML page is the same content, plus an optional 3D physics room and studio on wide screens.
 
-Source (MIT): <https://github.com/moldandyeast/my-main-oct> · More for language models: </llms.txt>
+Set in [ABC Areal by Dinamo](https://abcdinamo.com/typefaces/areal) · Source (MIT): <https://github.com/moldandyeast/my-main-oct> · More for language models: </llms.txt>

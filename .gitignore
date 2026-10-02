@@ -2,3 +2,7 @@ node_modules/
 .wrangler/
 .context/
 .DS_Store
+dist/
+# Dinamo licence §10: no fonts in public repositories. Only fonts/README.md is committed.
+fonts/*
+!fonts/README.md

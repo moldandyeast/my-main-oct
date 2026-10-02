@@ -12,6 +12,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { Resolver } from 'node:dns/promises';
 import https from 'node:https';
+import { execFileSync } from 'node:child_process';
 
 const root = new URL('..', import.meta.url);
 const read = p => readFileSync(new URL(p, root));
@@ -27,7 +28,8 @@ const html = read('public/index.html').toString('utf8');
 
 // The executable code: every <script> except the JSON-LD metadata block.
 const pieceJs = s => (s.match(/<script(?![^>]*application\/ld\+json)[^>]*>[\s\S]*?<\/script>/g) || []).join('');
-const creditLinks = [...(html.match(/<nav id="credits"[\s\S]*?<\/nav>/) || [''])[0].matchAll(/href="([^"]+)"/g)].map(m => m[1]);
+const creditLinks = [...(html.match(/<p class="colophon">[\s\S]*?<\/p>/) || [''])[0].matchAll(/href="([^"]+)"/g)].map(m => m[1]);
+const built = existsSync(new URL('dist/index.html', root)) ? read('dist/index.html') : null;
 const wrangler = read('wrangler.jsonc').toString('utf8');
 const host = (wrangler.match(/^\s*\{ "pattern":\s*"([^"/]+)/m) || [])[1];
 
@@ -37,7 +39,19 @@ check(!/<(script|img|iframe|video|audio|source|embed)\b[^>]*\bsrc=["']?(https?:)
 check(!/<link\b(?![^>]*\brel=["']?(canonical|me|alternate|help)\b)[^>]*\bhref=["']?(https?:)?\/\//i.test(html), 'no external stylesheets, icons or preloads');
 check(!/@import|url\(\s*["']?(https?:)?\/\//i.test(html), 'no external CSS imports or url()');
 check(!/fonts\.(googleapis|gstatic)\.com|cdn\.|unpkg\.com|jsdelivr/i.test(html), 'no font or CDN hosts mentioned');
-check(creditLinks.length >= 3, `credits bar has ${creditLinks.length} links`);
+check(creditLinks.length >= 2, `colophon has ${creditLinks.length} links`);
+// Dinamo licence §10: the font must never be in this (public) repository, not even as base64.
+let tracked = [];
+try { tracked = execFileSync('git', ['ls-files'], { cwd: root.pathname }).toString().split('\n').filter(Boolean); } catch { }
+check(!tracked.some(f => /\.(woff2?|ttf|otf|zip)$/i.test(f)), 'no font files tracked in git');
+check(!tracked.some(f => existsSync(new URL(f, root)) && /data:font\/[\w-]+;base64,[A-Za-z0-9+/]{200}/.test(read(f).toString('latin1'))), 'no inlined font data in tracked files');
+check(Boolean(built), 'dist/index.html built (npm run build)');
+if (built) {
+  const b = built.toString('utf8');
+  check(sha256(pieceJs(b)) === sha256(pieceJs(html)), 'dist JS identical to public/index.html JS');
+  if (/font-family: "ABC Areal"; src: url\(data:font\/woff2/.test(b)) ok(`dist inlines the ABC Areal subset (${(b.length / 1024).toFixed(0)} KB page)`);
+  else console.log('  note  dist has no ABC Areal subset (fonts/ABCArealVariable.woff2 missing), so the Arial fallback applies');
+}
 for (const f of ['public/llms.txt', 'public/index.md', 'public/robots.txt', 'public/sitemap.xml', 'public/_headers']) check(existsSync(new URL(f, root)), `${f} exists`);
 check(Boolean(host), `hostname in wrangler.jsonc: ${host}`);
 
@@ -68,7 +82,7 @@ if (!local) {
   catch (e) { bad(`1.1.1.1 cannot resolve ${host} (${e.code})`); }
 
   if (ip) {
-    for (const [path, file] of [['/', 'public/index.html'], ['/llms.txt', 'public/llms.txt'], ['/index.md', 'public/index.md'], ['/robots.txt', 'public/robots.txt'], ['/sitemap.xml', 'public/sitemap.xml']]) {
+    for (const [path, file] of [['/', 'dist/index.html'], ['/llms.txt', 'public/llms.txt'], ['/index.md', 'public/index.md'], ['/robots.txt', 'public/robots.txt'], ['/sitemap.xml', 'public/sitemap.xml']]) {
       try {
         const r = await get(`https://${host}${path}`, { ip });
         check(r.status === 200 && r.body.equals(read(file)), `${path} → ${r.status}, ${r.body.equals(read(file)) ? 'byte-identical to' : 'DIFFERS from'} ${file}`);
@@ -77,7 +91,7 @@ if (!local) {
     }
   }
 
-  console.log('Credits bar links');
+  console.log('Colophon links');
   for (const href of creditLinks) {
     try { const r = await get(href, { ip }); check(r.status === 200, `${href} → ${r.status}${r.url !== href ? ` (via ${r.url})` : ''}`); }
     catch (e) { bad(`${href}: ${e.message}`); }

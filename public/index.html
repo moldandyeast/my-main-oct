@@ -41,11 +41,12 @@
 }
 </script>
 <style>
+/*@font-face ABC Areal: inlined here by scripts/build.mjs when fonts/ABCArealVariable.woff2 exists; otherwise Arial*/
 :root {
   --bg: #ffffff; --fill: #ffffff; --fill-2: #f1f1f1; --ink: #1a1a1a; --ink-2: #6b6b6b;
   --grid: #f2f2f2; --grid-major: #e3e3e3; --accent: #1a1a1a; --accent-fill: #e6e6e6; --ghost: #f7f7f7;
   --panel: rgba(255, 255, 255, 0.94); --hair: #dedede; --radius: 2px; --is-dark: 0;
-  --mono: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif; --display: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+  --mono: "ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif; --display: "ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
   --fs-xs: 11px; --fs-s: 12px; --fs-m: 13px; --fs-l: 20px; --fs-xl: 30px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -67,7 +68,7 @@ button { font: inherit; color: inherit; }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 [hidden] { display: none !important; }
 
-/* ===== Site layer: Arial, white / #1a1a1a, light grey hairlines, 2px corners ===== */
+/* ===== Site layer: ABC Areal (Arial fallback), white / #1a1a1a, light grey hairlines, 2px corners ===== */
 #site { --muted: var(--ink-2); font-family: var(--mono); }
 html:not(.room) body { overflow: auto; height: auto; min-height: 100%; background: var(--bg); }
 html:not(.room) #app { display: none; }
@@ -151,38 +152,9 @@ html.room .hint { padding: 0 14px 10px; font-size: 11px; }
 .hud-item .k::first-letter, #stats dt::first-letter { text-transform: uppercase; }
 #legend .lg-tog::after { content: "Hide"; } #legend.min .lg-tog::after { content: "Controls"; }
 #toast { border-radius: var(--radius); text-transform: none; letter-spacing: 0; font-size: 12px; }
-/* ===== Credits bar: same Arial, inks and hairlines as the site layer. Text page and room; gone in the studio and in fullscreen. ===== */
-#credits {
-  --cr-h: 32px; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px;
-  --cr-x: max(clamp(20px, 6vw, 72px), calc((100% - 1040px) / 2 + clamp(20px, 6vw, 72px))); /* the text page's column */
-  padding: 10px var(--cr-x) 9px; font: 400 12px/1.1 var(--mono); color: var(--ink-2);
-  background: var(--bg); border-bottom: 1px solid var(--hair);
-}
-#credits b { font-weight: 700; color: var(--ink); }
-#credits ul { list-style: none; margin: 0 0 0 auto; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
-#credits a { color: inherit; text-decoration: none; }
-#credits a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-html:not(.room) body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
-html:not(.room) #site { flex: 1 0 auto; width: 100%; min-height: 0; }
-html.room #credits { position: fixed; top: 0; left: 0; right: 0; z-index: 6; height: var(--cr-h); padding: 0 16px; align-items: center; flex-wrap: nowrap; white-space: nowrap; background: var(--panel); }
-html.room #credits ul { flex-wrap: nowrap; }
-html.room:not(.studio) #app { top: 32px; }
-html.room:not(.studio) #site { top: 48px; }
-html.studio #credits, html:fullscreen #credits { display: none !important; }
-@media (display-mode: fullscreen) { #credits { display: none !important; } }
-@media (max-width: 560px) { #credits ul { margin-left: 0; } }
-@media print { #credits { display: none; } }
 </style>
 </head>
 <body>
-<nav id="credits" aria-label="Credits">
-  <b>Hi. I am Ramon</b>
-  <ul>
-    <li><a href="https://twitter.com/nilsedison">@nilsedison on Twitter</a></li>
-    <li><a href="https://content.moldandyeast.com">content.moldandyeast.com</a></li>
-    <li><a href="https://github.com/moldandyeast/my-main-oct">Source on GitHub</a></li>
-  </ul>
-</nav>
 <main id="site">
   <header>
     <p class="sheet" aria-hidden="true">Sheet R-00 · moldandyeast.com</p>
@@ -204,6 +176,7 @@ html.studio #credits, html:fullscreen #credits { display: none !important; }
     <button type="button" class="btn only-room" data-site="studio">Studio</button>
   </div>
   <p class="hint only-room" aria-hidden="true">Drag anything. Click a crate to open it.</p>
+  <p class="colophon">Set in <a href="https://abcdinamo.com/typefaces/areal" data-crate data-label="ABC Areal" data-host="Typeface by Dinamo">ABC Areal by Dinamo</a> · <a href="https://github.com/moldandyeast/my-main-oct">Source on GitHub</a></p>
 </main>
 
 <!-- Everything below is the 3D room and the hidden studio (decorative / optional). -->
@@ -211,7 +184,7 @@ html.studio #credits, html:fullscreen #credits { display: none !important; }
   --bg: #ffffff; --fill: #ffffff; --fill-2: #f1f1f1; --ink: #1a1a1a; --ink-2: #6b6b6b;
   --grid: #f2f2f2; --grid-major: #e3e3e3; --accent: #1a1a1a; --accent-fill: #e6e6e6; --ghost: #f7f7f7;
   --panel: rgba(255, 255, 255, 0.94); --hair: #dedede; --radius: 2px; --is-dark: 0;
-  --mono: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif; --display: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+  --mono: "ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif; --display: "ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
   --fs-xs: 11px; --fs-s: 12px; --fs-m: 13px; --fs-l: 20px; --fs-xl: 30px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -397,7 +370,7 @@ code { font-family: var(--mono); }
 #hud, #stats, #legend, #titleblock, #banner, .drawer, .tbtn, .dr-io, .sc-text, pre, .tbl { border-radius: var(--radius); }
 #titleblock, #banner, .drawer { border-color: var(--hair); box-shadow: none; }
 
-/* ===== Site layer: Arial, white / #1a1a1a, light grey hairlines, 2px corners ===== */
+/* ===== Site layer: ABC Areal (Arial fallback), white / #1a1a1a, light grey hairlines, 2px corners ===== */
 #site { --muted: var(--ink-2); font-family: var(--mono); }
 html:not(.room) body { overflow: auto; height: auto; min-height: 100%; background: var(--bg); }
 html:not(.room) #app { display: none; }
@@ -481,6 +454,24 @@ html.room .hint { padding: 0 14px 10px; font-size: 11px; }
 .hud-item .k::first-letter, #stats dt::first-letter { text-transform: uppercase; }
 #legend .lg-tog::after { content: "Hide"; } #legend.min .lg-tog::after { content: "Controls"; }
 #toast { border-radius: var(--radius); text-transform: none; letter-spacing: 0; font-size: 12px; }
+/* ===== Type. ABC Areal by Dinamo: one scale (13 · 16 · 20 · display), real weights (400 text, 500 labels, 700 the heading),
+   tracking that tightens as size grows, and Areal's Darkmode axis on light-on-dark. ===== */
+:root { --t-s: 13px; --t-m: 16px; --t-l: 20px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { font-variation-settings: "DRKM" var(--is-dark, 0); font-kerning: normal; text-rendering: optimizeLegibility; }
+#site h1 { font: 700 clamp(56px, 14vw, 160px)/0.88 var(--mono); letter-spacing: -0.035em; margin-left: -0.04em; }
+#links a { gap: 6px; padding: 16px 18px; }
+#links .lbl { font: 500 var(--t-l)/1.2 var(--mono); letter-spacing: -0.01em; }
+#links .host { font: 400 var(--t-m)/1.35 var(--mono); }
+#site .btn { font: 400 var(--t-s)/1 var(--mono); }
+.hint, .colophon { margin: 0; font: 400 var(--t-s)/1.4 var(--mono); color: var(--muted); letter-spacing: 0.005em; }
+.colophon a { color: inherit; text-decoration: underline; text-decoration-color: var(--hair); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.colophon a:hover, .colophon a.is-hot { color: var(--ink); text-decoration-color: currentColor; }
+html.room #links a { padding: 11px 14px; }
+html.room #links .lbl { font-size: 15px; letter-spacing: -0.005em; }
+html.room #links .host { font-size: var(--t-s); }
+html.room .hint { padding: 0 14px 10px; font-size: 12px; }
+html.room .colophon { border-top: 1px solid var(--hair); padding: 9px 14px 10px; font-size: 12px; }
+#stats, #hud, .hud-item { font-variant-numeric: tabular-nums; }
 </style>
 
 
@@ -4391,7 +4382,7 @@ class Overlay3 {
    §7  ENGINE SHELL — theme, input, audio, fixed-step loop, UI, demo registry
    ========================================================================== */
 const Theme = {
-  mono: 'Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif',
+  mono: '"ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif',
   colors: {}, _rgb: {}, display: 'system-ui, sans-serif',
   /** Non-colour art-style tokens (edited in Settings → Render). */
   style: { line: 1, hatch: 7, hatchAngle: 45, statics: true, fills: true, marks: true, grid: true, annotations: true, edgePx: 1, edgeDepth: 0.06, edgeNormal: 0.8, shade: 1, vignette: 0, grain: 0, fogStart: 70, fogEnd: 220 },
@@ -4699,6 +4690,7 @@ const Engine = {
    so a tuned setup can be copied straight into a future prompt.
    ========================================================================== */
 const FONT_STACKS = {
+  areal: { label: 'ABC Areal', v: '"ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif' },
   arial: { label: 'Arial', v: 'Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif' },
   mono: { label: 'Technical mono', v: 'ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Mono", Menlo, Consolas, "Liberation Mono", monospace' },
   typewriter: { label: 'Typewriter', v: '"Courier New", Courier, "Nimbus Mono PS", monospace' },
@@ -4706,6 +4698,7 @@ const FONT_STACKS = {
   humanist: { label: 'Humanist sans', v: '"Gill Sans", "Gill Sans MT", Optima, Candara, "Segoe UI", sans-serif' },
 };
 const DISPLAY_STACKS = {
+  areal: { label: 'ABC Areal', v: '"ABC Areal", Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif' },
   arial: { label: 'Arial', v: 'Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif' },
   condensed: { label: 'Condensed lettering', v: '"Avenir Next Condensed", "DIN Condensed", "Roboto Condensed", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif' },
   grotesk: { label: 'Grotesk sans', v: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' },
@@ -4731,7 +4724,7 @@ const Settings = {
       world: { substeps: 4, jointIterations: 2, rate: 60, timeScale: 1, gravityScale: 1, allowSleep: true, interpolate: true },
       phys: JSON.parse(JSON.stringify(this._base)),
       mat: { override: false, friction: 0.6, restitution: 0, rolling: 0, linearDamping: 0, angularDamping: 0.02 },
-      style: { preset: 'auto', mono: 'arial', display: 'arial', tokens, ...JSON.parse(JSON.stringify(this._styleBase)) },
+      style: { preset: 'auto', mono: 'areal', display: 'areal', tokens, ...JSON.parse(JSON.stringify(this._styleBase)) },
     };
   },
   /** Panel schema: [tab, section, key path, label, kind, min, max, step, hint] */
@@ -4921,7 +4914,7 @@ const Settings = {
       for (const [k, css] of Object.entries(TOKEN_CSS)) if (T[k]) r.setProperty('--' + css, T[k]);
       r.setProperty('--panel', rgba(T.bg, 0.88)); r.setProperty('--hair', rgba(T.ink, T.dark ? 0.16 : 0.13)); r.setProperty('--is-dark', T.dark ? '1' : '0'); r.setProperty('color-scheme', T.dark ? 'dark' : 'light');
     }
-    r.setProperty('--mono', (FONT_STACKS[st.mono] || FONT_STACKS.arial).v); r.setProperty('--display', (DISPLAY_STACKS[st.display] || DISPLAY_STACKS.arial).v);
+    r.setProperty('--mono', (FONT_STACKS[st.mono] || FONT_STACKS.areal).v); r.setProperty('--display', (DISPLAY_STACKS[st.display] || DISPLAY_STACKS.areal).v);
     Theme.read();
   },
   cyclePreset() {
@@ -5787,12 +5780,15 @@ Engine.register({
     });
     s.stackH = base; s.left = left; s.zt = zt; s.D = D; s.ramonW = lines[0].width;
     // crates for the four HTML links: a tower of three by the right wall, one on the floor
-    const links = (typeof Site !== 'undefined' && Site.links) || [], C = 0.95, tx = R.w / 2 - 1.1, tz = 0.6;
+    const all = (typeof Site !== 'undefined' && Site.links) || [], links = all.filter(l => !l.small), C = 0.95, tx = R.w / 2 - 1.1, tz = 0.6;
     s.links = links.map((l, i) => {
       const floor = i === links.length - 1, h = floor ? C : 1.0;
       const pos = floor ? v3(2.2, h / 2 + 2.2, 2.6) : v3(tx, h / 2 + (links.length - 2 - i) * 1.0 + 0.3 + (links.length - 2 - i) * 0.5, tz);
       return W.add({ shape: Shape3.box(floor ? C : 1.1, h, floor ? C : 1.0), pos, q: Quat.axisAngle(v3(0, 1, 0), floor ? -0.35 : 0), density: 0.6, friction: 0.8, style: { hatch: true }, user: { link: i, hop: floor } });
     });
+    // the colophon's typeface credit: a small crate at the back wall
+    const si = all.findIndex(l => l.small), c = 0.5;
+    if (si >= 0) s.links.push(W.add({ shape: Shape3.box(c, c, c), pos: v3(0.9, c / 2 + 1.6, R.z0 + 0.8), q: Quat.axisAngle(v3(0, 1, 0), 0.45), density: 0.6, friction: 0.8, style: { hatch: true }, user: { link: si, hop: true, small: true } }));
     s.hoverLink = -1;
   },
   step(g) {
@@ -5836,9 +5832,9 @@ Engine.register({
     o.dim(v3(s.left, 0, z + 0.35), v3(s.left + s.ramonW, 0, z + 0.35), s.ramonW.toFixed(2));
     s.links.forEach(b => {
       const L = Site.links[b.user.link]; if (!L) return; const hot = Site.hl === b.user.link || s.hoverLink === b.user.link, fl = b.user.hop; // tower crates: label to the left · floor crate: label below
-      const p = fl ? (b.rp || b.pos).add(v3(0, -0.5, 0.5)) : rpose(b, v3(-0.62, 0, 0.5)), al = fl ? 'center' : 'right', y0 = fl ? 16 : -8;
-      o.text(L.label, p, { size: 13, bold: true, font: ArialText.FONT, color: hot ? T.accent : T.ink, bg: T.bg, dy: y0, align: al });
-      o.text(L.host, p, { size: 12, font: ArialText.FONT, color: hot ? T.accent : T.ink2, bg: T.bg, dy: y0 + 17, align: al });
+      const sm = b.user.small, p = fl ? (b.rp || b.pos).add(sm ? v3(0, -0.25, 0.25) : v3(0, -0.5, 0.5)) : rpose(b, v3(-0.62, 0, 0.5)), al = fl ? 'center' : 'right', y0 = fl ? (sm ? 12 : 16) : -8;
+      o.text(L.label, p, { size: sm ? 12 : 13, bold: true, font: Theme.mono, color: hot ? T.accent : T.ink, bg: T.bg, dy: y0, align: al });
+      o.text(L.host, p, { size: sm ? 11 : 12, font: Theme.mono, color: hot ? T.accent : T.ink2, bg: T.bg, dy: y0 + (sm ? 15 : 17), align: al });
     });
     if (s.poke && s.poke.t < 0.5) o.ring(s.poke.p, 4 + 40 * Ease.outCubic(s.poke.t / 0.5), T.accent);
   },
@@ -6370,10 +6366,10 @@ const Site = {
   gl() { if (this._gl == null) { try { this._gl = !!document.createElement('canvas').getContext('webgl2'); } catch (e) { this._gl = false; } } return this._gl; },
   pref(v) { try { if (v === undefined) return localStorage.getItem(this.KEY); localStorage.setItem(this.KEY, v); } catch (e) { return null; } },
   boot() {
-    this.links = [...document.querySelectorAll('#links a')].map((el, i) => {
+    this.links = [...document.querySelectorAll('#links a, a[data-crate]')].map((el, i) => {
       el.addEventListener('mouseenter', () => this.highlight(i, true)); el.addEventListener('mouseleave', () => this.highlight(i, false));
       el.addEventListener('focus', () => this.highlight(i, true)); el.addEventListener('blur', () => this.highlight(i, false));
-      return { el, label: el.dataset.label, host: el.dataset.host, ext: !el.href.startsWith('mailto:') };
+      return { el, label: el.dataset.label, host: el.dataset.host, ext: !el.href.startsWith('mailto:'), small: el.hasAttribute('data-crate') };
     });
     document.addEventListener('click', e => {
       const b = e.target.closest('[data-site]'); if (!b) return; const a = b.dataset.site;

@@ -10,8 +10,10 @@
   "routes": [
     { "pattern": "moldandyeast.com/*", "zone_name": "moldandyeast.com" }
   ],
+  // scripts/build.mjs copies public/ to dist/ and inlines the ABC Areal subset (kept out of git, see fonts/README.md)
+  "build": { "command": "node scripts/build.mjs", "watch_dir": "public" },
   "assets": {
-    "directory": "./public",
+    "directory": "./dist",
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "single-page-application"
   }
