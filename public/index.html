@@ -743,9 +743,10 @@ bodies:
      height: "5*fbm(x*0.03, z*0.03)*smoothstep(9, 26, hypot(x, z))"}
   - {tag: rock, shape: rock, size: [1.2, 0.8, 1], scatter: {count: 20, min: [-30, 9, -30], max: [30, 9, 30]}}
   - {name: crystal, shape: hull, points: [[0, 0.5, 0], [0.2, 0, 0.2], [-0.2, 0, 0.2], [0, 0, -0.25], [0, -0.3, 0]], pos: [8, "=height(8, 0) + 0.4", 0]}
-  - {name: doll, ragdoll: {scale: 1}, row: {count: 3, spacing: [1.6, 0, 0]}, pos: [4, 2.5, -1]}
+  - {name: doll, ragdoll: {scale: 1}, pos: [2, 1.2, 2]}
+  - {name: bag, shape: capsule, length: 0.9, r: 0.28, density: 3, pos: [4, 2.9, -1]}
 joints:
-  - {type: rope, a: world, b: doll1.head, anchorA: [4, 4.2, -1]}
+  - {type: rope, a: world, b: bag, anchorA: [4, 4.2, -1], anchorB: [4, 3.63, -1]}
 rules:
   - {on: key F, do: [fire pellet 70]}
   - {on: key C, do: [checkpoint]}
@@ -990,14 +991,14 @@ annotate:
 # B-06 EXPEDITION — written in the YAML scene language. Shows the v0.5 engine
 # features: heightfield terrain, a kinematic character controller (step-up,
 # slope limit), convex hull rocks (GJK/EPA), a triangle-mesh ramp, bullets
-# (swept, no tunnelling), cone-twist ragdolls, checkpoints and rewind.
+# (swept, no tunnelling), rope pendulums, checkpoints and rewind.
 scene:
   id: expedition
   title: Expedition
   code: B-06
   dim: 3
   tag: Character · terrain · YAML
-  about: Walk the survey site, climb the stair, and shoot the six crystals off their plinths. Swinging dummies and rolling rocks get in the way.
+  about: Walk the survey site, climb the stair, and shoot the six crystals off their plinths. Swinging sandbags and rolling rocks get in the way.
   grab: false
   seed: 7
   controls:
@@ -1056,16 +1057,16 @@ bodies:
     style: {accent: true}
   # loose rocks: random convex hulls dropped onto the hills
   - {tag: rock, shape: rock, size: ["=rand(0.6, 1.5)", "=rand(0.5, 1.1)", "=rand(0.6, 1.4)"], scatter: {count: 22, min: [-30, 0, -30], max: [30, 0, 30]}, pos: [0, "=9", 0], density: 2}
-  # gantry with three hanging crash-test dummies
+  # gantry with three swinging sandbags (capsules on ropes, set swinging at different speeds)
   - {name: beam, type: static, shape: box, size: [6, 0.3, 0.3], pos: [6, 4.4, -1], style: {hatch: true}}
   - {type: static, shape: box, size: [0.3, 4.4, 0.3], pos: [3.2, 2.2, -1]}
   - {type: static, shape: box, size: [0.3, 4.4, 0.3], pos: [8.8, 2.2, -1]}
-  - {name: doll, ragdoll: {scale: 1}, row: {count: 3, spacing: [1.6, 0, 0]}, pos: [4.4, 2.5, -1], style: {ghost: true}}
+  - {name: bag, tag: sandbag, shape: capsule, length: 0.9, r: 0.28, density: 3, row: {count: 3, spacing: [1.6, 0, 0]}, pos: [4.4, 2.9, -1], vel: [0, 0, "=1.2 + i*0.6"], style: {hatch: true}}
 
 joints:
-  - {type: rope, a: world, b: doll1.head, anchorA: [4.4, 4.25, -1]}
-  - {type: rope, a: world, b: doll2.head, anchorA: [6.0, 4.25, -1]}
-  - {type: rope, a: world, b: doll3.head, anchorA: [7.6, 4.25, -1]}
+  - {type: rope, a: world, b: bag1, anchorA: [4.4, 4.25, -1], anchorB: [4.4, 3.63, -1]}
+  - {type: rope, a: world, b: bag2, anchorA: [6.0, 4.25, -1], anchorB: [6.0, 3.63, -1]}
+  - {type: rope, a: world, b: bag3, anchorA: [7.6, 4.25, -1], anchorB: [7.6, 3.63, -1]}
 
 rules:
   - on: key F
@@ -1091,7 +1092,7 @@ hud:
 annotate:
   - {dim: [[-8.05, 0, -3.3], [-8.05, 1.5, -3.3]], label: "STAIR 6 × 0.25"}
   - {callout: [3.9, 0.75, -5], label: "MESH RAMP"}
-  - {callout: doll2.head, label: "RAGDOLL × 3 · CONE-TWIST"}
+  - {callout: bag2, label: "SANDBAG × 3 · ROPE"}
   - {callout: player, label: "CHARACTER", accent: true}
 </script>
 <script type="text/yaml" data-scene="pinball">
