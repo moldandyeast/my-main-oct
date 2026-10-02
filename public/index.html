@@ -5814,7 +5814,7 @@ Engine.register({
     if (o) { // stay roughly inside the drawing: limited look-around, front edges of the room framed to the screen
       o.yaw = clamp(o.yaw, -0.45, 0.45); o.pitch = clamp(o.pitch, -0.06, 0.3);
       if (I.mouse.wheel || I.pinch !== 1) s.manualCam = true;
-      if (!s.manualCam) o.dist = clamp((R.w / 2) / (Math.tan(v.cam.fov / 2) * (v.w / v.h)) + (R.z1 - R.z0), o.min, o.max);
+      if (!s.manualCam && v.w > 0 && v.h > 0) o.dist = clamp((R.w / 2) / (Math.tan(v.cam.fov / 2) * (v.w / v.h)) + (R.z1 - R.z0), o.min, o.max);
     }
     if (g.grabJ) { Engine.cv2.style.cursor = 'grabbing'; return; }
     if (!m.inside || m.buttons) return;
@@ -6397,7 +6397,7 @@ const Site = {
         const h = location.hash.slice(1);
         Engine.init({ id: 'room' });
         if (h === 'studio' || (h && h !== 'room' && Engine.demos.some(d => d.id === h))) this.studio(true);
-      } else requestAnimationFrame(() => Engine.resize());
+      } else Engine.resize(); // now, not next frame: the stage measured 0×0 while hidden, and one frame at 0×0 leaves the room camera NaN
     } else { if (this.studioOpen) this.studio(false); Engine.sleeping = true; }
   },
   studio(on) {
