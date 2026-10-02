@@ -1,0 +1,27 @@
+# moldandyeast.com
+
+> Personal site of Ramon: a heading and four links. One self-contained HTML file with no build step, no trackers and no third-party requests. On wide screens it also opens a WebGL 2 physics room, with a full physics studio behind a "Studio" button.
+
+The content is the same in every mode; the plain HTML in `<main id="site">` is the source of truth and the 3D room only mirrors it. For contact, use the links below.
+
+## Contact
+
+- [More about me](https://content.moldandyeast.com): background, writing and work
+- [Reach out on X](https://x.com/nilsedison): @nilsedison
+- [Project inquiry](https://we3.co): start a project through We3
+- [Exploration inquiry](mailto:hej@ramonmarc.com): email hej@ramonmarc.com
+
+## This page
+
+- [Markdown version](https://moldandyeast.com/index.md): the page's content as plain Markdown
+- [HTML](https://moldandyeast.com/): the whole site, about 520 KB, all inline
+
+## Source
+
+- [GitHub repository](https://github.com/moldandyeast/my-main-oct): MIT licensed and meant to be forked. `AGENTS.md` explains the layout, the invariants and how to deploy a fork to your own domain.
+- Typeface: [ABC Areal by Dinamo](https://abcdinamo.com/typefaces/areal), free, but not redistributable, so it is subset and inlined at build time and never committed (see `fonts/README.md`).
+
+## Optional
+
+- Studio documentation: embedded in the HTML inside `<section id="spec">`. It covers the YAML scene language, bodies, joints, rules, expressions, settings and the JavaScript sheet API. Give a model this file and ask for "a YAML scene for <game idea>"; paste the answer into the studio's Scene editor and press Run.
+- URL anchors (wide screens with WebGL 2): `#studio` opens the studio; `#room`, `#structures`, `#siege`, `#rover`, `#stress2d`, `#mass`, `#demolition`, `#courier`, `#stress3d`, `#bowling`, `#expedition`, `#pinball` and `#quarry` open a sheet directly.

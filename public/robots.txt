@@ -1,0 +1,6 @@
+# Everyone, including AI crawlers and agents, is welcome.
+# Plain-text summaries: /llms.txt and /index.md
+User-agent: *
+Allow: /
+
+Sitemap: https://moldandyeast.com/sitemap.xml
